@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000";
+const API_URL = "https://mmrtype.onrender.com";
 
 export async function getLeaderboard() {
   const res = await fetch(`${API_URL}/api/leaderboard`);
