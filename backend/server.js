@@ -1,80 +1,112 @@
-require("dotenv").config(); // <-- REQUIRED so MONGO_URI loads
-
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
 
 const app = express();
-app.use(cors());
+
 app.use(express.json());
+app.use(
+  cors({
+    origin: ["https://mmrtype.com", "http://localhost:5173", "http://localhost:3000"],
+    credentials: false
+  })
+);
 
-// ===== MongoDB Connection =====
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log("Connected to MongoDB"))
-.catch(err => console.error("MongoDB connection error:", err));
+mongoose
+  .connect(process.env.MONGO_URI, { dbName: "mmrtype" })
+  .then(() => console.log("Mongo connected"))
+  .catch(err => console.error("Mongo error", err));
 
-// ===== User Schema =====
-const UserSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   username: { type: String, unique: true },
-  passwordHash: String,
+  password: String, // for demo only; in real life hash this
   elo: { type: Number, default: 1000 }
 });
 
-const User = mongoose.model("User", UserSchema);
+const User = mongoose.model("User", userSchema);
 
-// ===== Signup =====
-app.post("/api/signup", async (req, res) => {
-  const { username, password } = req.body;
+// REGISTER
+app.post("/api/register", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    if (!username || !password)
+      return res.json({ error: "Missing username or password" });
 
-  const existing = await User.findOne({ username });
-  if (existing) return res.json({ error: "Username already taken" });
+    const existing = await User.findOne({ username });
+    if (existing) return res.json({ error: "Username already taken" });
 
-  const passwordHash = await bcrypt.hash(password, 10);
-
-  const user = new User({ username, passwordHash, elo: 1000 });
-  await user.save();
-
-  res.json({ success: true });
+    const user = await User.create({ username, password, elo: 1000 });
+    res.json({ username: user.username, elo: user.elo });
+  } catch (e) {
+    console.error(e);
+    res.json({ error: "Server error" });
+  }
 });
 
-// ===== Login =====
+// LOGIN
 app.post("/api/login", async (req, res) => {
-  const { username, password } = req.body;
+  try {
+    const { username, password } = req.body;
+    if (!username || !password)
+      return res.json({ error: "Missing username or password" });
 
-  const user = await User.findOne({ username });
-  if (!user) return res.json({ error: "Invalid username or password" });
+    const user = await User.findOne({ username });
+    if (!user || user.password !== password)
+      return res.json({ error: "Invalid credentials" });
 
-  const match = await bcrypt.compare(password, user.passwordHash);
-  if (!match) return res.json({ error: "Invalid username or password" });
-
-  res.json({
-    success: true,
-    username: user.username,
-    elo: user.elo
-  });
+    res.json({ username: user.username, elo: user.elo });
+  } catch (e) {
+    console.error(e);
+    res.json({ error: "Server error" });
+  }
 });
 
-// ===== Update ELO =====
-app.post("/api/updateElo", async (req, res) => {
-  const { username, newElo } = req.body;
+// UPDATE ELO
+app.post("/api/update-elo", async (req, res) => {
+  try {
+    const { username, elo } = req.body;
+    if (!username || typeof elo !== "number")
+      return res.json({ error: "Invalid payload" });
 
-  await User.updateOne({ username }, { elo: newElo });
+    const user = await User.findOneAndUpdate(
+      { username },
+      { $set: { elo } },
+      { new: true }
+    );
+    if (!user) return res.json({ error: "User not found" });
 
-  res.json({ success: true });
+    res.json({ username: user.username, elo: user.elo });
+  } catch (e) {
+    console.error(e);
+    res.json({ error: "Server error" });
+  }
 });
 
-// ===== Leaderboard =====
-app.get("/api/leaderboard", async (req, res) => {
-  const top = await User.find({})
-    .sort({ elo: -1 })
-    .limit(100);
-
-  res.json(top);
+// LEADERBOARD
+app.get("/api/leaderboard", async (_req, res) => {
+  try {
+    const users = await User.find().sort({ elo: -1 }).limit(100);
+    const withTier = users.map(u => ({
+      username: u.username,
+      elo: u.elo,
+      tier:
+        u.elo >= 2000
+          ? "Grandmaster"
+          : u.elo >= 1700
+          ? "Master"
+          : u.elo >= 1400
+          ? "Diamond"
+          : u.elo >= 1100
+          ? "Gold"
+          : "Bronze"
+    }));
+    res.json(withTier);
+  } catch (e) {
+    console.error(e);
+    res.json([]);
+  }
 });
 
-// ===== Start Server =====
-app.listen(3000, () => console.log("Backend running on port 3000"));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log("Server running on " + PORT));
