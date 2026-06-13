@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MMRType</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <div id="live-stats">
+    WPM <span id="live-wpm">0</span> • ACC <span id="live-acc">100</span>%
+  </div>
+
+  <div class="page">
+    <!-- HOME SCREEN -->
+    <section id="home-screen" class="home">
+      <header class="top-bar">
+        <div class="logo">MMRTYPE</div>
+
+        <div class="top-actions">
+          <button id="leaderboard-btn" class="top-btn">
+            Leaderboards
+          </button>
+          <button id="account-btn" class="account-btn">
+            Sign In / Create Account
+          </button>
+        </div>
+      </header>
+
+      <h1 class="title">MMRType</h1>
+
+      <div class="mode-grid">
+        <div class="mode-card">
+          <div class="mode-header">
+            <h2>Standard Mode</h2>
+            <p>The core competitive typing experience.</p>
+          </div>
+          <div class="mode-sample">
+            fact house out just end few develop would of long you before do very after.
+          </div>
+          <button id="standard-btn" class="primary-btn">play</button>
+        </div>
+
+        <div class="mode-card">
+          <div class="mode-header">
+            <h2>Play with friends</h2>
+            <p>Race up to 16 players and bots.</p>
+          </div>
+          <div class="mode-sample">
+            invite friends, fill the lobby, and race with bots if no one joins.
+          </div>
+          <button id="friends-btn" class="secondary-btn">host lobby</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- GAME / RACE SCREEN -->
+    <section id="game-screen" class="game hidden">
+      <header class="game-header">
+        <div class="game-title">MMRType</div>
+
+        <div class="top-actions">
+          <button id="leaderboard-btn-2" class="top-btn">
+            Leaderboards
+          </button>
+          <button id="account-btn-2" class="account-btn">
+            Sign In / Create Account
+          </button>
+        </div>
+      </header>
+
+      <!-- COUNTDOWN OVERLAY -->
+      <div id="countdown" class="countdown hidden">5</div>
+
+      <div class="game-layout">
+        <div class="prompt-box">
+          <div id="words-container" class="prompt-text"></div>
+          <input
+            id="input-bar"
+            class="prompt-input"
+            type="text"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="Type here..."
+          />
+        </div>
+
+        <div class="sidebar">
+          <div id="lobby-label" class="sidebar-label">Race</div>
+          <div id="players-list" class="players-list"></div>
+
+          <div class="sidebar-footer">
+            <div class="stat-row">
+              <span>WPM</span><span id="final-wpm">0.00</span>
+            </div>
+            <div class="stat-row">
+              <span>Accuracy</span><span id="final-acc">100.00%</span>
+            </div>
+            <div class="stat-row">
+              <span>Raw WPM</span><span id="final-raw">0.00</span>
+            </div>
+            <div class="stat-row">
+              <span>Time</span><span id="final-time">0.00s</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button id="back-home-btn" class="back-btn">← back</button>
+    </section>
+
+    <!-- LEADERBOARD SCREEN -->
+    <section id="leaderboard-screen" class="leaderboard hidden">
+      <header class="top-bar">
+        <div class="logo">MMRTYPE</div>
+        <div class="top-actions">
+          <button id="leaderboard-back-btn" class="top-btn">
+            ← Back
+          </button>
+        </div>
+      </header>
+
+      <h1 class="title small">Top 100 Players</h1>
+
+      <div class="leaderboard-controls">
+        <input
+          id="leaderboard-search"
+          class="leaderboard-search"
+          type="text"
+          placeholder="Search username..."
+        />
+      </div>
+
+      <div class="leaderboard-table">
+        <div class="leaderboard-header-row">
+          <span>#</span>
+          <span>Username</span>
+          <span>ELO</span>
+          <span>Tier</span>
+        </div>
+        <div id="leaderboard-body" class="leaderboard-body"></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- RESULTS MODAL -->
+  <div id="results-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Result</h2>
+      <div class="modal-row">
+        <span>Placement</span><span id="modal-place">-</span>
+      </div>
+      <div class="modal-row">
+        <span>ELO change</span><span id="modal-elo-delta">0</span>
+      </div>
+      <div class="modal-row">
+        <span>WPM</span><span id="modal-wpm">0.00</span>
+      </div>
+      <div class="modal-row">
+        <span>Accuracy</span><span id="modal-acc">100.00%</span>
+      </div>
+      <div class="modal-row">
+        <span>Raw WPM</span><span id="modal-raw">0.00</span>
+      </div>
+      <div class="modal-row">
+        <span>Time</span><span id="modal-time">0.00s</span>
+      </div>
+
+      <div id="race-summary" class="race-summary"></div>
+
+      <button id="restart-btn" class="primary-btn full">restart</button>
+    </div>
+  </div>
+
+  <!-- AUTH MODAL -->
+  <div id="auth-modal" class="modal hidden">
+    <div class="modal-content auth-box">
+      <h2 id="auth-title">Sign In</h2>
+
+      <input id="auth-username" class="auth-input" type="text" placeholder="Username" />
+      <input id="auth-password" class="auth-input" type="password" placeholder="Password" />
+      <input id="auth-confirm" class="auth-input hidden" type="password" placeholder="Confirm Password" />
+
+      <div id="auth-error" class="auth-error"></div>
+
+      <button id="auth-submit" class="primary-btn full">Continue</button>
+
+      <button id="auth-switch" class="auth-switch">
+        Don't have an account? Create one
+      </button>
+    </div>
+  </div>
+</body>
+</html>

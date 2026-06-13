@@ -1,0 +1,610 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Segoe UI", sans-serif;
+  background: radial-gradient(circle at top, #151827 0, #05060a 55%, #000 100%);
+  color: #f5f5f5;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page {
+  width: 960px;
+  max-width: 95vw;
+}
+
+/* live stats pill */
+
+#live-stats {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #f5f5f5;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  z-index: 10;
+}
+
+/* home screen */
+
+.home {
+  padding: 24px 20px 40px;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #a5b0ff;
+}
+
+.logo {
+  font-weight: 700;
+}
+
+.top-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.top-btn {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid #3a3f5a;
+  background: rgba(10, 12, 22, 0.9);
+  color: #cfd3ff;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.top-btn:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.title {
+  font-size: 2.6rem;
+  margin-bottom: 26px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.title.small {
+  font-size: 2rem;
+}
+
+.mode-grid {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+}
+
+.mode-card {
+  flex: 1;
+  max-width: 420px;
+  padding: 20px 22px 18px;
+  border-radius: 18px;
+  background: rgba(10, 12, 22, 0.96);
+  border: 1px solid #262a3f;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7);
+  text-align: left;
+}
+
+.mode-header h2 {
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.mode-header p {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  margin-bottom: 10px;
+}
+
+.mode-sample {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(15, 18, 32, 0.9);
+  border: 1px solid #262a3f;
+  margin-bottom: 12px;
+}
+
+.primary-btn,
+.secondary-btn {
+  padding: 7px 16px;
+  border-radius: 999px;
+  border: none;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.primary-btn {
+  background: #7f8cff;
+  color: #05060a;
+  font-weight: 600;
+}
+
+.primary-btn:hover {
+  background: #9aa5ff;
+}
+
+.secondary-btn {
+  background: transparent;
+  color: #cfd3ff;
+  border: 1px solid #3a3f5a;
+}
+
+.secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* account button */
+
+.account-btn {
+  padding: 8px 16px;
+  border-radius: 10px;
+  background: rgba(127, 140, 255, 0.15);
+  border: 1px solid #7f8cff;
+  color: #cfd3ff;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+.account-btn:hover {
+  background: rgba(127, 140, 255, 0.25);
+  color: #ffffff;
+}
+
+/* game screen */
+
+.game {
+  padding: 26px 24px 20px;
+  border-radius: 18px;
+  background: radial-gradient(circle at top left, #1b1f2f, #05060a 60%);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
+  position: relative;
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  font-size: 0.9rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #a5b0ff;
+}
+
+.game-title {
+  font-weight: 700;
+}
+
+.game-layout {
+  display: grid;
+  grid-template-columns: 2fr 1.4fr;
+  gap: 18px;
+}
+
+.prompt-box {
+  padding: 16px 16px 14px;
+  border-radius: 14px;
+  background: rgba(10, 12, 22, 0.96);
+  border: 1px solid #262a3f;
+}
+
+.prompt-text {
+  min-height: 90px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #cfd3ff;
+  margin-bottom: 10px;
+  user-select: none;
+}
+
+.char {
+  opacity: 0.4;
+}
+
+.char.correct {
+  color: #f5f5f5;
+  opacity: 1;
+}
+
+.char.incorrect {
+  color: #ff6b81;
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.prompt-input {
+  width: 100%;
+  padding: 9px 11px;
+  border-radius: 10px;
+  border: 1px solid #2b3045;
+  background: rgba(5, 6, 12, 0.9);
+  color: #f5f5f5;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.prompt-input:focus {
+  border-color: #7f8cff;
+  box-shadow: 0 0 0 1px rgba(127, 140, 255, 0.4);
+}
+
+/* sidebar / race lanes */
+
+.sidebar {
+  padding: 14px 14px 12px;
+  border-radius: 14px;
+  background: rgba(10, 12, 22, 0.96);
+  border: 1px solid #262a3f;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sidebar-label {
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #a0a4c5;
+  margin-bottom: 8px;
+}
+
+.players-list {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+  max-height: 260px;
+}
+
+/* race lane */
+
+.race-lane {
+  padding: 6px 4px 10px;
+  margin-bottom: 4px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  background: rgba(8, 10, 20, 0.9);
+  border: 1px solid #262a3f;
+}
+
+.race-lane.you {
+  border-color: #7f8cff;
+  box-shadow: 0 0 0 1px rgba(127, 140, 255, 0.3);
+}
+
+.race-lane-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.race-lane-name {
+  font-weight: 500;
+}
+
+.race-lane-meta {
+  font-size: 0.7rem;
+  opacity: 0.7;
+}
+
+.race-lane-rank {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid #3a3f5a;
+}
+
+.race-lane-track {
+  position: relative;
+  height: 16px;
+  border-radius: 999px;
+  background: #151827;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.race-lane-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0%;
+  background: linear-gradient(90deg, #7f8cff, #9aa5ff);
+  transition: width 0.15s linear;
+}
+
+.race-lane-car {
+  position: absolute;
+  top: 50%;
+  width: 26px;
+  height: 12px;
+  transform: translate(-50%, -50%);
+  border-radius: 6px;
+  background: #ffb347;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+}
+
+.race-lane-car::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 5px;
+  background: #22263a;
+}
+
+.race-lane-car::after {
+  content: "";
+  position: absolute;
+  left: 3px;
+  right: 3px;
+  bottom: -2px;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.race-lane-finish {
+  position: absolute;
+  right: 4px;
+  top: 2px;
+  bottom: 2px;
+  width: 4px;
+  background-image: linear-gradient(
+    45deg,
+    #ffffff 25%,
+    #000000 25%,
+    #000000 50%,
+    #ffffff 50%,
+    #ffffff 75%,
+    #000000 75%,
+    #000000 100%
+  );
+  background-size: 4px 4px;
+}
+
+.race-lane-status {
+  margin-top: 2px;
+  font-size: 0.7rem;
+  opacity: 0.8;
+}
+
+/* finished lane */
+
+.race-lane.finished {
+  background: rgba(20, 24, 40, 0.9);
+}
+
+/* sidebar footer */
+
+.sidebar-footer {
+  margin-top: 10px;
+  border-top: 1px solid #262a3f;
+  padding-top: 8px;
+  font-size: 0.8rem;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 3px;
+}
+
+/* back button */
+
+.back-btn {
+  margin-top: 10px;
+  background: transparent;
+  border: none;
+  color: #a0a4c5;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.back-btn:hover {
+  color: #cfd3ff;
+}
+
+/* modal */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 20;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: #0b0d16;
+  padding: 22px 24px 18px;
+  border-radius: 16px;
+  width: 340px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7);
+}
+
+.modal-content h2 {
+  margin-bottom: 12px;
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #a5b0ff;
+}
+
+.modal-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+}
+
+.primary-btn.full {
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* auth modal */
+
+.auth-box {
+  width: 340px;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: 1px solid #2b3045;
+  background: rgba(5, 6, 12, 0.9);
+  color: #f5f5f5;
+}
+
+.auth-error {
+  color: #ff6b81;
+  font-size: 0.8rem;
+  margin-bottom: 8px;
+  min-height: 16px;
+}
+
+.auth-switch {
+  margin-top: 10px;
+  background: none;
+  border: none;
+  color: #7f8cff;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+/* race summary */
+
+.race-summary {
+  margin-top: 10px;
+  max-height: 180px;
+  overflow-y: auto;
+  font-size: 0.8rem;
+  border-top: 1px solid #262a3f;
+  padding-top: 8px;
+}
+
+/* countdown */
+
+.countdown {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+}
+
+/* leaderboard screen */
+
+.leaderboard {
+  padding: 24px 20px 40px;
+}
+
+.leaderboard-controls {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.leaderboard-search {
+  width: 260px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: 1px solid #2b3045;
+  background: rgba(5, 6, 12, 0.9);
+  color: #f5f5f5;
+  font-size: 0.85rem;
+}
+
+.leaderboard-table {
+  border-radius: 16px;
+  background: rgba(10, 12, 22, 0.96);
+  border: 1px solid #262a3f;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7);
+  padding: 10px 14px;
+}
+
+.leaderboard-header-row,
+.leaderboard-row {
+  display: grid;
+  grid-template-columns: 0.6fr 2fr 1fr 1.2fr;
+  gap: 8px;
+  font-size: 0.85rem;
+  padding: 4px 0;
+}
+
+.leaderboard-header-row {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #a0a4c5;
+  border-bottom: 1px solid #262a3f;
+  margin-bottom: 4px;
+}
+
+.leaderboard-body {
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.leaderboard-row.me {
+  background: rgba(127, 140, 255, 0.12);
+  border-radius: 10px;
+}
+
+.leaderboard-tier {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid #3a3f5a;
+}
+
+/* utils */
+
+.hidden {
+  display: none !important;
+}
+
+@media (max-width: 800px) {
+  .game-layout {
+    grid-template-columns: 1fr;
+  }
+}
